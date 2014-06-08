@@ -14,8 +14,6 @@ import tqkey.android.entity.User
 
 public class ListResidentsAdapter extends ArrayAdapter<User> {
 
-    private Context mContext
-
     private static class ViewHolder {
         def profileImageView
 
@@ -32,7 +30,6 @@ public class ListResidentsAdapter extends ArrayAdapter<User> {
 
     public ListResidentsAdapter(Context context) {
         super(context, 0)
-        mContext = getContext()
     }
 
     public void setData(List<User> list) {
@@ -56,8 +53,8 @@ public class ListResidentsAdapter extends ArrayAdapter<User> {
         }
 
         User user = getItem(position)
-        Picasso.with(mContext)
-                .load(mContext.getString(R.string.profile_image_api, user.getName()))
+        Picasso.with(getContext())
+                .load(getContext().getString(R.string.profile_image_api, user.getName()))
                 .resize(120, 120)
                 .into(holder.profileImageView as ImageView)
         holder.atHomeTextView.setText(user.getAtHomeText())
