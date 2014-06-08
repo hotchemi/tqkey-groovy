@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tqhouse_api">http://intense-dawn-3408.herokuapp.com/users.json</string>
+    <string name="profile_image_api">http://www.paper-glasses.com/api/twipi/%1$s/original</string>
+    <string name="twitter_profile">https://twitter.com/%1$s</string>
+</resources>

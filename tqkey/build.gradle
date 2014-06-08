@@ -1,0 +1,60 @@
+import com.android.build.gradle.AppPlugin
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        applicationId "tqkey.android"
+        minSdkVersion 8
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/groovy-release-info.properties'
+    }
+
+    buildTypes {
+        debug {
+            runProguard false
+        }
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.loopj.android:android-async-http:1.4.4'
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.+'
+    compile 'org.codehaus.groovy:groovy:2.4.0-SNAPSHOT:grooid'
+    compile ('org.codehaus.groovy:groovy-json:2.4.0-SNAPSHOT') {
+        transitive = false
+    }
+}
+
+android.applicationVariants.all {
+    task "groovy${name}Compile"(type: GroovyCompile) {
+        source = javaCompile.source + fileTree('src/main/java').include('**/*.groovy')
+        destinationDir = javaCompile.destinationDir
+        classpath = javaCompile.classpath
+        groovyClasspath = classpath
+        sourceCompatibility = '1.6'
+        targetCompatibility = '1.6'
+        doFirst {
+            def runtimeJars = plugins.findPlugin(AppPlugin).bootClasspath
+            classpath = files(runtimeJars) + classpath
+        }
+    }
+    javaCompile.dependsOn("groovy${name}Compile")
+    javaCompile.enabled = false
+}
